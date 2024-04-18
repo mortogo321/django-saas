@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "djoser",
+    "social_django",
     "users",
 ]
 
@@ -140,6 +141,12 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "static"
 
+AUTHENTICATION_BACKENDS = [
+    "social_core.backends.google.GoogleOAuth2",
+    "social_core.backends.facebook.FacebookOAuth2",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "users.authentication.UserJWTAuthentication",
@@ -156,6 +163,10 @@ DJOSER = {
     "USER_CREATE_PASSWORD_RETYPE": True,
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "TOKEN_MODEL": None,
+    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": env(
+        "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS",
+        "http://localhost:3000/auth/google,http://localhost:3000/auth/facebook",
+    ).split(","),
 }
 
 # Default primary key field type
@@ -172,6 +183,26 @@ AUTH_COOKIE_SECURE = env("AUTH_COOKIE_SECURE", True)
 AUTH_COOKIE_HTTP_ONLY = True
 AUTH_COOKIE_PATH = "/"
 AUTH_COOKIE_SAMESITE = "None"
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "openid",
+]
+SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = [
+    "first_name",
+    "last_name",
+]
+
+SOCIAL_AUTH_FACEBOOK_OAUTH2_KEY = env("SOCIAL_AUTH_FACEBOOK_OAUTH2_KEY")
+SOCIAL_AUTH_FACEBOOK_OAUTH2_SECRET = env("SOCIAL_AUTH_FACEBOOK_OAUTH2_SECRET")
+SOCIAL_AUTH_FACEBOOK_OAUTH2_SCOPE = ["email"]
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    "fields": "email, first_name, last_name",
+}
+
 
 # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
