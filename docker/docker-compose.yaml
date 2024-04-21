@@ -2,44 +2,70 @@ name: kalidocs
 
 services:
   api:
-    container_name: api
     build: ../server
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn base.wsgi:application --bind 0.0.0.0:8000
     restart: unless-stopped
     deploy:
       replicas: 4
     networks:
       - internal
     volumes:
-      - ../server/:/app/server/
+      - ../server/:/app/
+      - static_files:/app/static_files
     depends_on:
       - db
+
+  celery:
+    container_name: celery
+    build: ../server
+    command: celery -A config worker -l info
+    restart: unless-stopped
+    networks:
+      - internal
+    volumes:
+      - ../server/:/app/
+    depends_on:
+      - db
+      - redis
+      - api
 
   web:
     container_name: web
     build: ../web
-    deploy:
-      replicas: 2
+    restart: unless-stopped
     networks:
       - internal
     volumes:
-      - ../web/:/app/web/
+      - ../web/:/app/
+      - node_modules:/app/node_modules
 
   db:
     container_name: db
-    image: postgres:13
+    image: postgres:latest
+    restart: unless-stopped
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     networks:
       - internal
 
+  redis:
+    container_name: redis
+    image: redis:latest
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+
   nginx:
     build: ../nginx
     container_name: nginx
+    restart: unless-stopped
     ports:
       - 80:80
     networks:
       - internal
+    volumes:
+      - ../web/dist/:/usr/share/nginx/html
+      - static_files:/app/static_files
     depends_on:
       - api
 
@@ -47,5 +73,7 @@ networks:
   internal:
 
 volumes:
-  content_data:
+  node_modules:
   postgres_data:
+  redis_data:
+  static_files:
