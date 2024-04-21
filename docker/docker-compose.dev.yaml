@@ -12,7 +12,7 @@ services:
     env_file:
       - ../server/.env.dev
     volumes:
-      - ../server/:/app/
+      - ../server:/app
       - ../server/static:/app/static
     depends_on:
       - db
@@ -27,7 +27,7 @@ services:
     env_file:
       - ../server/.env.dev
     volumes:
-      - ../server/:/app/
+      - ../server:/app
       - ../server/static:/app/static
     depends_on:
       - db
@@ -47,7 +47,7 @@ services:
     env_file:
       - ../web/.env.dev
     volumes:
-      - ../web/:/app/
+      - ../web:/app
       - node_modules:/app/node_modules
 
   db:

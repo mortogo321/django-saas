@@ -12,19 +12,12 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import json
 from os import getenv as env
-from os import path
 from pathlib import Path
 
-import dotenv
 from django.core.management.utils import get_random_secret_key
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-env_file = BASE_DIR / ".env.local"
-
-if path.isfile(env_file):
-    dotenv.load_dotenv(env_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -66,6 +59,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+USE_X_FORWARDED_HOST = True
+FORCE_SCRIPT_NAME = "/api"
 
 ROOT_URLCONF = "base.urls"
 
