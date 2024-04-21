@@ -5,8 +5,6 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
-RUN mkdir static_files
-
 COPY . .
 
 RUN pip install --upgrade pip

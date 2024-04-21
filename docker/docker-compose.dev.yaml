@@ -13,7 +13,7 @@ services:
       - ../server/.env.dev
     volumes:
       - ../server/:/app/
-      - static_files:/app/static_files
+      - ../server/static:/app/static
     depends_on:
       - db
 
@@ -28,6 +28,7 @@ services:
       - ../server/.env.dev
     volumes:
       - ../server/:/app/
+      - ../server/static:/app/static
     depends_on:
       - db
       - redis
@@ -73,16 +74,16 @@ services:
 
   nginx:
     container_name: nginx
-    build:
-      context: ../nginx
-      dockerfile: Dockerfile.dev
+    build: ../nginx
     restart: unless-stopped
     ports:
       - 80:80
     networks:
       - internal
     volumes:
-      - static_files:/app/static_files
+      - ../nginx/nginx.dev.conf:/etc/nginx/conf.d/default.conf
+      - ../nginx/nginx.cors.conf:/etc/nginx/cors.conf
+      - ../server/static:/app/static
     depends_on:
       - api
 
@@ -93,4 +94,3 @@ volumes:
   node_modules:
   postgres_data:
   redis_data:
-  static_files:
