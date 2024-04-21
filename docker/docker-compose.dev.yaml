@@ -1,0 +1,81 @@
+name: kalidocs
+
+services:
+  api:
+    build: ../server
+    command: python manage.py runserver 0.0.0.0:8000
+    restart: unless-stopped
+    deploy:
+      replicas: 4
+    networks:
+      - internal
+    env_file:
+      - ../server/.env.dev
+    volumes:
+      - ../server/:/app/server/
+    depends_on:
+      - db
+
+  celery:
+    build: ../server
+    command: celery -A config worker -l info
+    restart: unless_stopped
+    networks:
+      - internal
+    env_file:
+      - ../server/.env.dev
+    volumes:
+      - ../server/:/app/server/
+    depends_on:
+      - db
+      - redis
+      - api
+
+  web:
+    container_name: web
+    build:
+      context: ../web
+      dockerfile: Dockerfile.dev
+    restart: unless-stopped
+    networks:
+      - internal
+    env_file:
+      - ../web/.env.dev
+    volumes:
+      - ../web/:/app/web/
+
+  db:
+    container_name: db
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ../server/.env.dev
+    networks:
+      - internal
+
+  redis:
+    image: redis:latest
+
+  nginx:
+    build: ../nginx
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - 80:80
+    networks:
+      - internal
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/mediafiles
+    depends_on:
+      - api
+
+networks:
+  internal:
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:

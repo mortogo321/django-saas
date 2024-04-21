@@ -1,0 +1,8 @@
+stages:
+  - build
+  - test
+  - release
+  - deploy
+
+build-job:
+  stage: build

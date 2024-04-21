@@ -1,0 +1,51 @@
+name: kalidocs
+
+services:
+  api:
+    container_name: api
+    build: ../server
+    command: python manage.py runserver 0.0.0.0:8000
+    restart: unless-stopped
+    deploy:
+      replicas: 4
+    networks:
+      - internal
+    volumes:
+      - ../server/:/app/server/
+    depends_on:
+      - db
+
+  web:
+    container_name: web
+    build: ../web
+    deploy:
+      replicas: 2
+    networks:
+      - internal
+    volumes:
+      - ../web/:/app/web/
+
+  db:
+    container_name: db
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - internal
+
+  nginx:
+    build: ../nginx
+    container_name: nginx
+    ports:
+      - 80:80
+    networks:
+      - internal
+    depends_on:
+      - api
+
+networks:
+  internal:
+
+volumes:
+  content_data:
+  postgres_data:
