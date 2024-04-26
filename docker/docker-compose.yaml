@@ -13,7 +13,6 @@ services:
       - ../server/.env.dev
     volumes:
       - ../server:/app
-      - ../server/env:/app/env
       - ../server/.env.dev:/app/.env
       - ../server/static:/app/static
     depends_on:
@@ -30,7 +29,6 @@ services:
       - ../server/.env.dev
     volumes:
       - ../server:/app
-      - ../server/env:/app/env
       - ../server/.env.dev:/app/.env
       - ../server/static:/app/static
     depends_on:
