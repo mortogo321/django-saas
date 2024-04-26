@@ -5,4 +5,5 @@ django-cors-headers
 djoser
 gunicorn
 psycopg2-binary
+python-dotenv
 redis

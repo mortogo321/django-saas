@@ -3,17 +3,14 @@ name: kalidocs
 services:
   api:
     build: ../server
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn base.wsgi:application --bind 0.0.0.0:8000
     restart: unless-stopped
     deploy:
-      replicas: 1
+      replicas: 4
     networks:
       - internal
     env_file:
-      - ../server/.env.dev
-    volumes:
-      - ../server:/app
-      - ../server/static:/app/static
+      - ../server/.env.production
     depends_on:
       - db
 
@@ -25,10 +22,7 @@ services:
     networks:
       - internal
     env_file:
-      - ../server/.env.dev
-    volumes:
-      - ../server:/app
-      - ../server/static:/app/static
+      - ../server/.env.production
     depends_on:
       - db
       - redis
@@ -36,18 +30,13 @@ services:
 
   web:
     container_name: web
-    build:
-      context: ../web
-      dockerfile: Dockerfile.dev
+    build: ../web
     restart: unless-stopped
-    ports:
-      - 3000:3000
     networks:
       - internal
     env_file:
-      - ../web/.env.dev
+      - ../web/.env.production
     volumes:
-      - ../web:/app
       - node_modules:/app/node_modules
 
   db:
@@ -56,12 +45,13 @@ services:
     restart: unless-stopped
     ports:
       - 5432:5432
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - ../server/.env.dev
+      - ../server/.env.production
     networks:
       - internal
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
 
   redis:
     container_name: redis
@@ -75,17 +65,18 @@ services:
       - redis_data:/data
 
   nginx:
-    container_name: nginx
     build: ../nginx
+    container_name: nginx
     restart: unless-stopped
     ports:
       - 80:80
     networks:
       - internal
     volumes:
-      - ../nginx/nginx.dev.conf:/etc/nginx/conf.d/default.conf
+      - ../nginx/nginx.conf:/etc/nginx/conf.d/default.conf
       - ../nginx/nginx.cors.conf:/etc/nginx/cors.conf
       - ../server/static:/app/static
+      - ../web/dist:/usr/share/nginx/html
     depends_on:
       - api
 
