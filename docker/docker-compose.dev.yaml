@@ -6,7 +6,7 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     restart: unless-stopped
     deploy:
-      replicas: 4
+      replicas: 1
     networks:
       - internal
     env_file:
@@ -54,6 +54,8 @@ services:
     container_name: db
     image: postgres:latest
     restart: unless-stopped
+    ports:
+      - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:

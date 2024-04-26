@@ -89,13 +89,13 @@ WSGI_APPLICATION = "base.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.{}".format(env("DATABASE_ENGINE", "sqlite3")),
-        "NAME": env("DATABASE_NAME", BASE_DIR / "db.sqlite3"),
-        "USER": env("DATABASE_USERNAME", "postgres"),
-        "PASSWORD": env("DATABASE_PASSWORD", "postgres"),
-        "HOST": env("DATABASE_HOST", "127.0.0.1"),
-        "PORT": env("DATABASE_PORT", 5432),
-        "OPTIONS": json.loads(env("DATABASE_OPTIONS", "{}")),
+        "ENGINE": "django.db.backends.{}".format(env("DB_ENGINE", "sqlite3")),
+        "NAME": env("DB_NAME", BASE_DIR / "db.sqlite3"),
+        "USER": env("DB_USERNAME", "postgres"),
+        "PASSWORD": env("DB_PASSWORD", "postgres"),
+        "HOST": env("DB_HOST", "127.0.0.1"),
+        "PORT": env("DB_PORT", 5432),
+        "OPTIONS": json.loads(env("DB_OPTIONS", "{}")),
     }
 }
 
