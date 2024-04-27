@@ -19,7 +19,7 @@ services:
   celery:
     container_name: celery
     build: ../server
-    command: celery -A base worker -l info
+    command: celery -A core worker -l info
     restart: unless-stopped
     networks:
       - internal
