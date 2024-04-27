@@ -5,4 +5,10 @@ WORKDIR /app
 COPY . .
 
 RUN npm install
-RUN npm run build
+
+EXPOSE 3000    
+
+COPY ./entrypoint.sh .
+RUN chmod +x /app/entrypoint.sh
+
+ENTRYPOINT ["sh", "/app/entrypoint.sh"]

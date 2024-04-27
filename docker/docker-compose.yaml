@@ -9,8 +9,6 @@ services:
       replicas: 1
     networks:
       - internal
-    env_file:
-      - ../server/.env.dev
     volumes:
       - ../server:/app
       - ../server/.env.dev:/app/.env
@@ -25,8 +23,6 @@ services:
     restart: unless-stopped
     networks:
       - internal
-    env_file:
-      - ../server/.env.dev
     volumes:
       - ../server:/app
       - ../server/.env.dev:/app/.env
@@ -38,16 +34,12 @@ services:
 
   web:
     container_name: web
-    build:
-      context: ../web
-      dockerfile: Dockerfile.dev
+    build: ../web
     restart: unless-stopped
     ports:
       - 3000:3000
     networks:
       - internal
-    env_file:
-      - ../web/.env.dev
     volumes:
       - ../web:/app
       - ../web/.env.dev:/app/.env
