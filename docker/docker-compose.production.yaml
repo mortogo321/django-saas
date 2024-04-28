@@ -3,7 +3,7 @@ name: kalidocs
 services:
   api:
     build: ../server
-    command: gunicorn base.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn core.wsgi:application --bind 0.0.0.0:8000
     restart: unless-stopped
     deploy:
       replicas: 1
@@ -17,7 +17,7 @@ services:
   celery:
     container_name: celery
     build: ../server
-    command: celery -A base worker -l info
+    command: celery -A core worker -l info
     restart: unless-stopped
     networks:
       - internal

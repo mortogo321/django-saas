@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY", get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG", False) == 'True'
+DEBUG = env("DEBUG", False) == "True"
 
 ALLOWED_HOSTS = env("ALLOWED_HOSTS", "localhost").split(",")
 
@@ -66,7 +66,7 @@ MIDDLEWARE = [
 USE_X_FORWARDED_HOST = True
 FORCE_SCRIPT_NAME = "/api"
 
-ROOT_URLCONF = "base.urls"
+ROOT_URLCONF = "core.urls"
 
 TEMPLATES = [
     {
@@ -84,7 +84,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "base.wsgi.application"
+WSGI_APPLICATION = "core.wsgi.application"
 
 
 # Database
@@ -139,6 +139,8 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "static"
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 CACHES = {
     "default": {
@@ -166,16 +168,20 @@ REST_FRAMEWORK = {
 }
 
 DJOSER = {
-    "PASSWORD_RESET_CONFIRM_URL": "/password/reset/confirm/{uid}/{token}",
-    "ACTIVATION_URL": "/activate/{uid}/{token}",
+    "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
     "SEND_ACTIVATION_EMAIL": True,
+    "ACTIVATION_URL": "activate/{uid}/{token}",
     "USER_CREATE_PASSWORD_RETYPE": True,
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "TOKEN_MODEL": None,
     "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": env(
         "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS",
-        "http://localhost:3000/auth/google,http://localhost:3000/auth/facebook",
+        "http://localhost/auth/google,http://localhost/auth/facebook",
     ).split(","),
+    "SERIALIZERS": {
+        "user_create": "users.serializers.UserCreateSerializer",
+        "user_create_password_retype": "users.serializers.UserCreateSerializer",
+    },
 }
 
 # Default primary key field type
@@ -212,5 +218,5 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     "fields": "email, first_name, last_name",
 }
 
-
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+DEFAULT_FROM_EMAIL = env("EMAIL_FROM")
