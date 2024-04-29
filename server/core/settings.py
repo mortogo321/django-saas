@@ -168,9 +168,9 @@ REST_FRAMEWORK = {
 }
 
 DJOSER = {
-    "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
+    "PASSWORD_RESET_CONFIRM_URL": "auth/password/reset/confirm/{uid}/{token}",
     "SEND_ACTIVATION_EMAIL": True,
-    "ACTIVATION_URL": "activate/{uid}/{token}",
+    "ACTIVATION_URL": "auth/activate/{uid}/{token}",
     "USER_CREATE_PASSWORD_RETYPE": True,
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "TOKEN_MODEL": None,
@@ -179,8 +179,10 @@ DJOSER = {
         "http://localhost/auth/google,http://localhost/auth/facebook",
     ).split(","),
     "SERIALIZERS": {
-        "user_create": "users.serializers.UserCreateSerializer",
-        "user_create_password_retype": "users.serializers.UserCreateSerializer",
+        "user_create": "users.serializers.UserSerializer",
+        "user_create_password_retype": "users.serializers.UserSerializer",
+        "user": "users.serializers.UserSerializer",
+        "current_user": "users.serializers.UserSerializer",
     },
 }
 
@@ -194,7 +196,7 @@ AUTH_USER_MODEL = "users.User"
 AUTH_COOKIE = "access"
 AUTH_COOKIE_ACCESS_MAX_AGE = 60 * 5
 AUTH_COOKIE_REFRESH_MAX_AGE = 60 * 60 * 24
-AUTH_COOKIE_SECURE = env("AUTH_COOKIE_SECURE", True)
+AUTH_COOKIE_SECURE = env("AUTH_COOKIE_SECURE", True) == "True"
 AUTH_COOKIE_HTTP_ONLY = True
 AUTH_COOKIE_PATH = "/"
 AUTH_COOKIE_SAMESITE = "None"
@@ -225,5 +227,8 @@ EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = env("EMAIL_USE_TLS", False) == "True"
 EMAIL_USE_SSL = env("EMAIL_USE_SSL", False) == "True"
+
+DOMAIN = env("DOMAIN")
+SITE_NAME = env("SITE_NAME")
 DEFAULT_FROM_EMAIL = env("EMAIL_FROM")
 EMAIL_SUBJECT_PREFIX = env("EMAIL_SUBJECT_PREFIX")
