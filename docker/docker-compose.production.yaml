@@ -79,6 +79,7 @@ services:
       - ../nginx/nginx.production.conf:/etc/nginx/conf.d/default.conf
       - ../nginx/nginx.cors.conf:/etc/nginx/cors.conf
       - ../server/static:/app/static
+      - ../server/media:/app/media
       - ../web/dist:/app/web
     depends_on:
       - api
