@@ -1,6 +1,10 @@
+from os import getenv as env
+
 from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
 from djoser.social.views import ProviderAuthView
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -115,5 +119,22 @@ class LogoutView(APIView):
         response = Response(status=status.HTTP_204_NO_CONTENT)
         response.delete_cookie("access")
         response.delete_cookie("refresh")
+
+        return response
+
+
+class SendMail(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request: Request, *args, **kwargs) -> Response:
+
+        subject, from_email, to = "hello", env("EMAIL_FROM"), "mortogo321@gmail.com"
+        text_content = "This is an important message."
+        html_content = "<p>This is an <strong>important</strong> message.</p>"
+        msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+
+        response = Response(status=status.HTTP_200_OK)
 
         return response
