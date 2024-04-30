@@ -13,6 +13,7 @@ services:
       - ../server:/app
       - ../server/.env.dev:/app/.env
       - ../server/static:/app/static
+      - ../server/media:/app/media
     depends_on:
       - db
 
@@ -27,6 +28,7 @@ services:
       - ../server:/app
       - ../server/.env.dev:/app/.env
       - ../server/static:/app/static
+      - ../server/media:/app/media
     depends_on:
       - db
       - redis

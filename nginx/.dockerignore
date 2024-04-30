@@ -1,0 +1,9 @@
+**/.DS_Store
+.vscode
+node_modules
+dist
+
+README.md
+Dockerfile*
+.dockerignore
+.gitignore
