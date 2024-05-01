@@ -63,9 +63,12 @@ services:
   redis:
     container_name: redis
     image: redis:alpine
+    command: sh -c "redis-server --save 20 1 --loglevel warning --appendonly yes --requirepass $$REDIS_PASSWORD"
     restart: unless-stopped
     ports:
       - 6379:6379
+    env_file:
+      - ../server/.env.dev
     networks:
       - internal
     volumes:
@@ -73,7 +76,9 @@ services:
 
   nginx:
     container_name: nginx
-    build: ../nginx
+    build:
+      context: ..
+      dockerfile: ./nginx/Dockerfile
     restart: unless-stopped
     ports:
       - 80:80
