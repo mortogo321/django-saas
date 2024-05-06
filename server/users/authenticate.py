@@ -4,7 +4,7 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.http.request import HttpRequest
 
 
-class EmailBackend(ModelBackend):
+class ModelBackend(ModelBackend):
     def authenticate(
         self,
         request: HttpRequest,

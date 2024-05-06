@@ -153,10 +153,10 @@ CELERY_BROKER_URL = env("CELERY_BROKER_URL")
 CELERY_RESULT_BACKEND = env("REDIS_BACKEND")
 
 AUTHENTICATION_BACKENDS = [
-    # "social_core.backends.google.GoogleOAuth2",
-    # "social_core.backends.facebook.FacebookOAuth2",
-    "django.contrib.auth.backends.ModelBackend",
-    # "users.authenticate.EmailBackend"
+    "social_core.backends.google.GoogleOAuth2",
+    "social_core.backends.facebook.FacebookOAuth2",
+    # "django.contrib.auth.backends.ModelBackend",
+    "users.authenticate.ModelBackend"
 ]
 
 REST_FRAMEWORK = {
