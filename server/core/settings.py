@@ -34,6 +34,9 @@ CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", default="http://localhost"
     ","
 )
 CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="http://localhost").split(
+    ","
+)
 
 # Application definition
 
@@ -49,6 +52,7 @@ INSTALLED_APPS = [
     "djoser",
     "social_django",
     "users",
+    "payment",
 ]
 
 MIDDLEWARE = [
@@ -234,3 +238,7 @@ DOMAIN = config("DOMAIN")
 SITE_NAME = config("SITE_NAME")
 DEFAULT_FROM_EMAIL = config("EMAIL_FROM")
 EMAIL_SUBJECT_PREFIX = config("EMAIL_SUBJECT_PREFIX")
+
+STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY")
+STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
+STRIPE_ENDPOINT_SECRET = config("STRIPE_ENDPOINT_SECRET")

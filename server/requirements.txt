@@ -10,3 +10,4 @@ psycopg2-binary
 python-decouple
 redis
 social-auth-app-django
+stripe
