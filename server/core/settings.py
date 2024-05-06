@@ -153,9 +153,10 @@ CELERY_BROKER_URL = env("CELERY_BROKER_URL")
 CELERY_RESULT_BACKEND = env("REDIS_BACKEND")
 
 AUTHENTICATION_BACKENDS = [
-    "social_core.backends.google.GoogleOAuth2",
-    "social_core.backends.facebook.FacebookOAuth2",
+    # "social_core.backends.google.GoogleOAuth2",
+    # "social_core.backends.facebook.FacebookOAuth2",
     "django.contrib.auth.backends.ModelBackend",
+    # "users.authenticate.EmailBackend"
 ]
 
 REST_FRAMEWORK = {
@@ -179,10 +180,10 @@ DJOSER = {
         "http://localhost/auth/google,http://localhost/auth/facebook",
     ).split(","),
     "SERIALIZERS": {
-        "user_create": "users.serializers.UserSerializer",
-        "user_create_password_retype": "users.serializers.UserSerializer",
-        "user": "users.serializers.UserSerializer",
-        "current_user": "users.serializers.UserSerializer",
+        "user_create": "users.serializers.JWTUserSerializer",
+        "user_create_password_retype": "users.serializers.JWTUserSerializer",
+        "user": "users.serializers.JWTUserSerializer",
+        "current_user": "users.serializers.JWTUserSerializer",
     },
 }
 
