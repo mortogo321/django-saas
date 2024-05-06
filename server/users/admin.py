@@ -2,10 +2,11 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 
-from .models import User
+from .models import Profile, User
 
 
 class UserAdminConfig(UserAdmin):
+    model = User
     list_display = (
         "username",
         "email",
@@ -58,6 +59,25 @@ class UserAdminConfig(UserAdmin):
             },
         ),
     )
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide"),
+                "fields": (
+                    "username",
+                    "email",
+                    "first_name",
+                    "last_name",
+                    "password1",
+                    "password2",
+                    "is_staff",
+                    "is_active",
+                ),
+            },
+        ),
+    )
 
 
 admin.site.register(User, UserAdminConfig)
+admin.site.register(Profile)

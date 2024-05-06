@@ -38,10 +38,17 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ["username"]
 
     def __str__(self):
-        return self.email
+        return self.username
 
 
 class Profile(models.Model):
-    avatar = models.CharField(null=True, blank=True)
+    avatar = models.ImageField(
+        upload_to="avatar",
+        blank=True,
+        null=True,
+    )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username
