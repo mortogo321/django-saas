@@ -11,13 +11,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import json
-from os import getenv as env
 from pathlib import Path
 
+from decouple import config
 from django.core.management.utils import get_random_secret_key
-from dotenv import load_dotenv
-
-load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,14 +23,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY", get_random_secret_key())
+SECRET_KEY = config("SECRET_KEY", default=get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG", False) == "True"
+DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = env("ALLOWED_HOSTS", "localhost").split(",")
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost").split(",")
 
-CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS", "http://localhost").split(",")
+CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", default="http://localhost").split(
+    ","
+)
 CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
@@ -92,13 +91,15 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.{}".format(env("DB_ENGINE", "sqlite3")),
-        "NAME": env("DB_NAME", BASE_DIR / "db.sqlite3"),
-        "USER": env("DB_USERNAME", "postgres"),
-        "PASSWORD": env("DB_PASSWORD", "postgres"),
-        "HOST": env("DB_HOST", "127.0.0.1"),
-        "PORT": env("DB_PORT", 5432),
-        "OPTIONS": json.loads(env("DB_OPTIONS", "{}")),
+        "ENGINE": "django.db.backends.{}".format(
+            config("DB_ENGINE", default="sqlite3")
+        ),
+        "NAME": config("DB_NAME", default=BASE_DIR / "db.sqlite3"),
+        "USER": config("DB_USERNAME", default="postgres"),
+        "PASSWORD": config("DB_PASSWORD", default="postgres"),
+        "HOST": config("DB_HOST", default="127.0.0.1"),
+        "PORT": config("DB_PORT", default=5432, cast=int),
+        "OPTIONS": json.loads(config("DB_OPTIONS", default="{}")),
     }
 }
 
@@ -145,18 +146,18 @@ MEDIA_ROOT = BASE_DIR / "media"
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": env("REDIS_BACKEND"),
+        "LOCATION": config("REDIS_BACKEND"),
     },
 }
 
-CELERY_BROKER_URL = env("CELERY_BROKER_URL")
-CELERY_RESULT_BACKEND = env("REDIS_BACKEND")
+CELERY_BROKER_URL = config("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = config("REDIS_BACKEND")
 
 AUTHENTICATION_BACKENDS = [
     "social_core.backends.google.GoogleOAuth2",
     "social_core.backends.facebook.FacebookOAuth2",
-    # "django.contrib.auth.backends.ModelBackend",
-    "users.authenticate.ModelBackend"
+    "django.contrib.auth.backends.ModelBackend",
+    # "users.authenticate.ModelBackend",
 ]
 
 REST_FRAMEWORK = {
@@ -175,9 +176,9 @@ DJOSER = {
     "USER_CREATE_PASSWORD_RETYPE": True,
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "TOKEN_MODEL": None,
-    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": env(
+    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": config(
         "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS",
-        "http://localhost/auth/google,http://localhost/auth/facebook",
+        default="http://localhost/auth/google,http://localhost/auth/facebook",
     ).split(","),
     "SERIALIZERS": {
         "user_create": "users.serializers.JWTUserSerializer",
@@ -197,13 +198,13 @@ AUTH_USER_MODEL = "users.User"
 AUTH_COOKIE = "access"
 AUTH_COOKIE_ACCESS_MAX_AGE = 60 * 5
 AUTH_COOKIE_REFRESH_MAX_AGE = 60 * 60 * 24
-AUTH_COOKIE_SECURE = env("AUTH_COOKIE_SECURE", True) == "True"
+AUTH_COOKIE_SECURE = config("AUTH_COOKIE_SECURE", default=True, cast=bool)
 AUTH_COOKIE_HTTP_ONLY = True
 AUTH_COOKIE_PATH = "/"
 AUTH_COOKIE_SAMESITE = "None"
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     "https://www.googleapis.com/auth/userinfo.email",
     "https://www.googleapis.com/auth/userinfo.profile",
@@ -214,22 +215,22 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = [
     "last_name",
 ]
 
-SOCIAL_AUTH_FACEBOOK_OAUTH2_KEY = env("SOCIAL_AUTH_FACEBOOK_OAUTH2_KEY")
-SOCIAL_AUTH_FACEBOOK_OAUTH2_SECRET = env("SOCIAL_AUTH_FACEBOOK_OAUTH2_SECRET")
+SOCIAL_AUTH_FACEBOOK_OAUTH2_KEY = config("SOCIAL_AUTH_FACEBOOK_OAUTH2_KEY")
+SOCIAL_AUTH_FACEBOOK_OAUTH2_SECRET = config("SOCIAL_AUTH_FACEBOOK_OAUTH2_SECRET")
 SOCIAL_AUTH_FACEBOOK_OAUTH2_SCOPE = ["email"]
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     "fields": "email, first_name, last_name",
 }
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = env("EMAIL_HOST")
-EMAIL_PORT = int(env("EMAIL_PORT"))
-EMAIL_HOST_USER = env("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
-EMAIL_USE_TLS = env("EMAIL_USE_TLS", False) == "True"
-EMAIL_USE_SSL = env("EMAIL_USE_SSL", False) == "True"
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=False, cast=bool)
+EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=False, cast=bool)
 
-DOMAIN = env("DOMAIN")
-SITE_NAME = env("SITE_NAME")
-DEFAULT_FROM_EMAIL = env("EMAIL_FROM")
-EMAIL_SUBJECT_PREFIX = env("EMAIL_SUBJECT_PREFIX")
+DOMAIN = config("DOMAIN")
+SITE_NAME = config("SITE_NAME")
+DEFAULT_FROM_EMAIL = config("EMAIL_FROM")
+EMAIL_SUBJECT_PREFIX = config("EMAIL_SUBJECT_PREFIX")
