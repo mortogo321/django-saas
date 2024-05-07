@@ -1,17 +1,45 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Icon } from '@iconify/vue';
+import { useColorMode } from '@vueuse/core';
 import { RouterLink, RouterView } from 'vue-router';
+
 import HelloWorld from './components/HelloWorld.vue';
+
+const mode = useColorMode()
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+    <div class="relative">
+      <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+      <div class="absolute top-0 left-1/4">
+        <DropdownMenu>
+          <DropdownMenuTrigger as-child>
+            <Button variant="outline">
+              <Icon icon="radix-icons:moon" class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Icon icon="radix-icons:sun" class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <span class="sr-only">Toggle theme</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem @click="mode = 'light'">
+              Light
+            </DropdownMenuItem>
+            <DropdownMenuItem @click="mode = 'dark'">
+              Dark
+            </DropdownMenuItem>
+            <DropdownMenuItem @click="mode = 'auto'">
+              System
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </div>
 
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
-      <h1 class="font-bold text-red-500 uppercase">text red 500</h1>
-      <Button>Click me !!</Button>
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
@@ -22,67 +50,3 @@ import HelloWorld from './components/HelloWorld.vue';
 
   <RouterView />
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>
