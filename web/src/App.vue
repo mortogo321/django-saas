@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Button } from '@/components/ui/button';
 import { RouterLink, RouterView } from 'vue-router';
 import HelloWorld from './components/HelloWorld.vue';
 </script>
@@ -9,6 +10,8 @@ import HelloWorld from './components/HelloWorld.vue';
 
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
+      <h1 class="font-bold text-red-500 uppercase">text red 500</h1>
+      <Button>Click me !!</Button>
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
