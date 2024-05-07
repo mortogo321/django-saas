@@ -91,7 +91,6 @@ services:
       - ../server/media:/app/media
     depends_on:
       - api
-      - web
 
 networks:
   internal:
