@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import json
 from pathlib import Path
 
-from decouple import config
+from decouple import Csv, config
 from django.core.management.utils import get_random_secret_key
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,15 +28,11 @@ SECRET_KEY = config("SECRET_KEY", default=get_random_secret_key())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost").split(",")
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost", cast=Csv())
 
-CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", default="http://localhost").split(
-    ","
-)
+CORS_ALLOWED_ORIGINS = config("ALLOWED_ORIGINS", default="http://localhost", cast=Csv())
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="http://localhost").split(
-    ","
-)
+CSRF_TRUSTED_ORIGINS = config("ALLOWED_ORIGINS", default="http://localhost", cast=Csv())
 
 # Application definition
 
@@ -49,8 +45,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "corsheaders",
     "djoser",
-    "order",
-    "payment",
+    # "order",
+    # "payment",
     "rest_framework",
     "social_django",
     "users",
@@ -148,15 +144,24 @@ STATIC_ROOT = BASE_DIR / "static"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+REDIS_BACKEND = (
+    "redis://:"
+    + config("REDIS_PASSWORD")
+    + "@"
+    + config("REDIS_HOST")
+    + ":"
+    + config("REDIS_PORT")
+    + "/0"
+)
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": config("REDIS_BACKEND"),
+        "LOCATION": REDIS_BACKEND,
     },
 }
 
-CELERY_BROKER_URL = config("CELERY_BROKER_URL")
-CELERY_RESULT_BACKEND = config("REDIS_BACKEND")
+CELERY_BROKER_URL = REDIS_BACKEND
+CELERY_RESULT_BACKEND = REDIS_BACKEND
 
 AUTHENTICATION_BACKENDS = [
     "social_core.backends.google.GoogleOAuth2",
@@ -184,7 +189,8 @@ DJOSER = {
     "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": config(
         "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS",
         default="http://localhost/auth/google,http://localhost/auth/facebook",
-    ).split(","),
+        cast=Csv(),
+    ),
     "SERIALIZERS": {
         "user_create": "users.serializers.JWTUserSerializer",
         "user_create_password_retype": "users.serializers.JWTUserSerializer",

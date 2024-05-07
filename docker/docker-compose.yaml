@@ -39,13 +39,13 @@ services:
     build: ../web
     restart: unless-stopped
     ports:
-      - 3000
+      - 3000:3000
     networks:
       - internal
     volumes:
       - ../web:/app
       - ../web/.env.dev:/app/.env
-      - ../web/node_modules:/app/node_modules
+      - /app/node_modules
 
   db:
     container_name: db
