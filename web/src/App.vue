@@ -6,6 +6,7 @@ import RecentSales from '@/components/RecentSales.vue'
 import Search from '@/components/Search.vue'
 import TeamSwitcher from '@/components/TeamSwitcher.vue'
 import UserNav from '@/components/UserNav.vue'
+import DarkMode from './components/DarkMode.vue'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -42,6 +43,7 @@ import {
         <div class="ml-auto flex items-center space-x-4">
           <Search />
           <UserNav />
+          <DarkMode />
         </div>
       </div>
     </div>

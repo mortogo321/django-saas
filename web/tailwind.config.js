@@ -1,14 +1,10 @@
-const defaultTheme = require("tailwindcss/defaultTheme");
-const animate = require("tailwindcss-animate");
+import tailwindcssAnimate from "tailwindcss-animate";
+import defaultTheme from "tailwindcss/defaultTheme";
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  darkMode: ["class"],
-  safelist: ["dark"],
-  prefix: "",
-
-  content: ["./pages/**/*.{ts,tsx,vue}", "./components/**/*.{ts,tsx,vue}", "./app/**/*.{ts,tsx,vue}", "./src/**/*.{ts,tsx,vue}"],
-
+export default {
+  darkMode: "class",
+  content: ["./src/**/*.{vue,js,ts,jsx,tsx,md}", "./.vitepress/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
     container: {
       center: true,
@@ -91,5 +87,5 @@ module.exports = {
       },
     },
   },
-  plugins: [animate],
+  plugins: [tailwindcssAnimate],
 };
