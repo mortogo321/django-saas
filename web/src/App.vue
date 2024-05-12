@@ -7,9 +7,14 @@ import { RouterView } from 'vue-router';
 
 <template>
   <DarkMode />
-  <HeaderMain />
-  <main class="flex-shrink-0">
-    <RouterView />
-  </main>
-  <FooterMain />
+
+  <div class="container d-flex flex-column h-100">
+    <HeaderMain />
+    
+    <main class="flex-shrink-0">
+      <RouterView />
+    </main>
+
+    <FooterMain />
+  </div>
 </template>
