@@ -1,19 +1,9 @@
 <script setup lang="ts">
+import { singleView } from '@/utiles';
 import { onMounted, onUnmounted } from 'vue';
 
-const header = document.querySelector('.main-header');
-
-onMounted(() => {
-  if (header) {
-    header.classList.add('mb-auto');
-  }
-});
-
-onUnmounted(() => {
-  if (header) {
-    header.classList.remove('mb-auto');
-  }
-});
+onMounted(() => singleView());
+onUnmounted(() => singleView(true));
 </script>
 
 <template>

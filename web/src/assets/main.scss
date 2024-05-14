@@ -1,4 +1,9 @@
 @import "bootstrap";
+@import "sweetalert2/src/sweetalert2";
+
+@import "fonts";
+@import "sizing";
+@import "sweetalert";
 
 main > .container {
   padding: 60px 15px 0;

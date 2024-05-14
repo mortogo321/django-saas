@@ -8,10 +8,10 @@ import { RouterView } from 'vue-router';
 <template>
   <DarkMode />
 
-  <div class="container d-flex flex-column h-100">
+  <div class="main-container container d-flex flex-column h-full">
     <HeaderMain />
     
-    <main class="flex-shrink-0">
+    <main class="flex-grow-1 w-full">
       <RouterView />
     </main>
 

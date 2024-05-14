@@ -1,5 +1,5 @@
 <template>
-    <header class="main-header">
+    <header class="main-header w-full">
         <div>
             <RouterLink to="/">
                 <h3 class="float-md-start mb-0 text-white">KaliDocs</h3>

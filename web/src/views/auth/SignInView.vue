@@ -1,36 +1,44 @@
 <script setup lang="ts">
+import logo from '@/assets/logo.svg';
+import Swal from 'sweetalert2';
 import { onMounted, onUnmounted } from 'vue';
 
-import logo from '@/assets/logo.svg';
+import { singleView } from '@/utiles';
 
-const header = document.querySelector('.main-header');
+onMounted(() => singleView());
+onUnmounted(() => singleView(true));
 
-onMounted(() => {
-    if (header) {
-        header.classList.add('mb-auto');
-    }
-});
-
-onUnmounted(() => {
-    if (header) {
-        header.classList.remove('mb-auto');
-    }
-});
+function onSubmit() {
+    Swal.fire({
+        title: 'Error!',
+        text: 'Do you want to continue',
+        icon: 'error',
+        confirmButtonText: 'Cool'
+    });
+}
 </script>
 
 <template>
-    <div class="form-sign-in w-100 m-auto">
-        <form>
+    <div class="w-1/3">
+        <form @submit.prevent="onSubmit">
             <img class="mb-4" :src="logo" alt="" width="72" height="57">
             <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-            <div class="form-floating">
-                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                <label for="floatingInput">Email address</label>
+            <div class="form-floating mb-3">
+                <input
+                    type="email"
+                    class="form-control"
+                    placeholder="name@example.com"
+                    required>
+                <label>Email address</label>
             </div>
-            <div class="form-floating">
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                <label for="floatingPassword">Password</label>
+            <div class="form-floating mb-3">
+                <input
+                    type="password"
+                    class="form-control"
+                    placeholder="Password"
+                    required>
+                <label>Password</label>
             </div>
 
             <div class="form-check text-start my-3">
@@ -39,31 +47,7 @@ onUnmounted(() => {
                     Remember me
                 </label>
             </div>
-            <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
-            <p class="mt-5 mb-3 text-body-secondary">&copy;KaliDocs 2024</p>
+            <button class="btn btn-primary w-full py-2" type="submit">Sign in</button>
         </form>
     </div>
 </template>
-
-<style lang="scss">
-.form-sign-in {
-    max-width: 330px;
-    padding: 1rem;
-
-    .form-floating:focus-within {
-        z-index: 2;
-    }
-
-    input[type="email"] {
-        margin-bottom: -1px;
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-
-    input[type="password"] {
-        margin-bottom: 10px;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-    }
-}
-</style>
