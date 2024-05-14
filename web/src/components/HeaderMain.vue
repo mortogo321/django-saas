@@ -1,6 +1,6 @@
 <template>
     <header class="main-header w-full">
-        <div>
+        <div class="py-3">
             <RouterLink to="/">
                 <h3 class="float-md-start mb-0 text-white">KaliDocs</h3>
             </RouterLink>
