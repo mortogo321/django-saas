@@ -3,7 +3,7 @@ import logo from '@/assets/logo.svg';
 import Swal from 'sweetalert2';
 import { onMounted, onUnmounted } from 'vue';
 
-import { singleView } from '@/utiles';
+import { singleView } from '@/utils';
 
 onMounted(() => singleView());
 onUnmounted(() => singleView(true));

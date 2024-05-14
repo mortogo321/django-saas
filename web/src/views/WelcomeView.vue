@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { singleView } from '@/utiles';
+import { singleView } from '@/utils';
 import { onMounted, onUnmounted } from 'vue';
 
 onMounted(() => singleView());
