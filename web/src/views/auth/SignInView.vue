@@ -36,8 +36,8 @@ async function onSubmit() {
     if (!isValid) {
         return
     }
-    // If the form is valid, perform some action with the form data
-    alert('Form submitted successfully')
+
+    console.log(form.email)
 }
 </script>
 
@@ -64,6 +64,7 @@ async function onSubmit() {
                     placeholder="Password"
                     v-model="form.password">
                 <label>Password</label>
+                <div v-if="v$.password.$error" class="invalid-feedback">{{ v$.password.$errors[0].$message }}</div>
             </div>
 
             <div class="form-check text-start mb-3">
