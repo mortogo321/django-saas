@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
-import { email, minLength, required } from '@vuelidate/validators';
+import { email, minLength, required, sameAs } from '@vuelidate/validators';
 import { computed, onMounted, onUnmounted, reactive } from 'vue';
 
 import logo from '@/assets/logo.svg';
@@ -12,7 +12,7 @@ onUnmounted(() => singleView(true));
 const form = reactive({
     email: '',
     password: '',
-    rememberMe: false,
+    confirmPassword: '',
 });
 
 const rules = computed(() => {
@@ -25,6 +25,7 @@ const rules = computed(() => {
             required,
             minLength: minLength(4)
         },
+        confirmPassword: sameAs(form.password),
     }
 })
 
@@ -45,7 +46,7 @@ async function onSubmit() {
     <div class="w-1/3">
         <form @submit.prevent="onSubmit" class="form-floating">
             <img class="mb-4" :src="logo" alt="" width="72" height="57">
-            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+            <h1 class="h3 mb-3 fw-normal">Create an account</h1>
 
             <div class="form-floating mb-3">
                 <input
@@ -66,17 +67,23 @@ async function onSubmit() {
                 <label>Password</label>
             </div>
 
-            <div class="form-check text-start mb-3">
-                <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">
-                    Remember me
-                </label>
+            <div class="form-floating mb-3">
+                <input
+                    type="password"
+                    class="form-control"
+                    :class="{ 'is-invalid': v$.confirmPassword.$error }"
+                    placeholder="Confirm Password"
+                    v-model="form.confirmPassword">
+                <label>Password</label>
             </div>
-            <button class="btn btn-primary w-full py-2" type="submit">Sign in</button>
+
+            <button class="btn btn-primary w-full py-2" type="submit">Sign up</button>
         </form>
 
-        <div class="py-3 text-center">
-            Don't have an account? <RouterLink to="/sign-up">Sign Up</RouterLink>
+        <div class="py-3 d-flex flex-wrap justify-content-center align-items-center gap-1">
+            Already have an account? <RouterLink to="/sign-in">Sign In</RouterLink>
+            <span class="divider"></span>
+            Forget your password? <RouterLink to="/">Reset Password</RouterLink>
         </div>
     </div>
 </template>
