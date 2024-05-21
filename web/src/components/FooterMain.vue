@@ -3,7 +3,7 @@ const year = new Date().getFullYear();
 </script>
 
 <template>
-    <footer class="w-full mt-auto text-center text-white-50">
+    <footer class="w-full mt-auto text-center text-muted">
         <p>&copy;KaliDocs {{ year }}.</p>
     </footer>
 </template>

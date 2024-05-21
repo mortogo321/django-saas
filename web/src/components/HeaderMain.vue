@@ -1,8 +1,8 @@
 <template>
     <header class="main-header w-full">
         <div class="py-3">
-            <RouterLink to="/">
-                <h3 class="float-md-start mb-0 text-white">KaliDocs</h3>
+            <RouterLink to="/" class="navbar-brand">
+                <h3 class="float-md-start mb-0">KaliDocs</h3>
             </RouterLink>
 
             <nav class="nav nav-masthead justify-content-center float-md-end">
