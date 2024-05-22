@@ -8,10 +8,12 @@ import SidebarMain from '@/components/SidebarMain.vue';
 <template>
     <div class="main-container container d-flex flex-column h-full">
         <HeaderMain />
-        <SidebarMain />
 
-        <main class="flex-grow-1 w-full d-flex justify-content-center align-items-center">
-            <slot />
+        <main class="flex-grow-1 w-full d-flex gap-3">
+            <SidebarMain />
+            <div class="w-full border">
+                <RouterView />
+            </div>
         </main>
 
         <FooterMain />

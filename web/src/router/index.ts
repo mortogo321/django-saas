@@ -33,15 +33,20 @@ const router = createRouter({
         layout: "SingleLayout",
       },
     },
-    // {
-    //   path: "/account",
-    //   component: () => import("@/views/account/AccountView.vue"),
-    //   meta: {
-    //     layout: "AccountLayout",
-    //     requiresAuth: true,
-    //   },
-    //   children: []
-    // },
+    {
+      path: "/account",
+      meta: {
+        layout: "AccountLayout",
+        requiresAuth: true,
+      },
+      children: [
+        {
+          path: "",
+          name: "account",
+          component: () => import("@/views/account/AccountView.vue"),
+        },
+      ],
+    },
   ],
 });
 
