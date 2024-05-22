@@ -1,15 +1,23 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
 import { email, minLength, required } from '@vuelidate/validators';
-import { computed, onMounted, onUnmounted, reactive } from 'vue';
+import { computed, onMounted, reactive } from 'vue';
 
 import logo from '@/assets/logo.svg';
 import { toast } from '@/plugins/sweetalert2';
 import { signIn } from '@/services/auth';
-import { singleView } from '@/utils';
+import { useAuthStore } from '@/stores/auth';
+import { useRouter } from 'vue-router';
 
-onMounted(() => singleView());
-onUnmounted(() => singleView(true));
+const auth = useAuthStore();
+const router = useRouter();
+
+onMounted(() => {
+    if (auth.isAuthenticated) {
+        router.push('/dashboard');
+    }
+
+});
 
 const form = reactive({
     email: '',
@@ -46,7 +54,11 @@ async function onSubmit() {
             icon: 'error',
             title: data.message,
         });
+
+        form.password = '';
     }
+
+    console.log(data);
 }
 </script>
 

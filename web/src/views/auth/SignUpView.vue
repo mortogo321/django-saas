@@ -1,14 +1,10 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
 import { email, minLength, required, sameAs } from '@vuelidate/validators';
-import { computed, onMounted, onUnmounted, reactive } from 'vue';
+import { computed, reactive } from 'vue';
 
 import logo from '@/assets/logo.svg';
 import { signUp } from '@/services/auth';
-import { singleView } from '@/utils';
-
-onMounted(() => singleView());
-onUnmounted(() => singleView(true));
 
 const form = reactive({
     username: '',

@@ -1,9 +1,4 @@
 <script setup lang="ts">
-import { singleView } from '@/utils';
-import { onMounted, onUnmounted } from 'vue';
-
-onMounted(() => singleView());
-onUnmounted(() => singleView(true));
 </script>
 
 <template>
