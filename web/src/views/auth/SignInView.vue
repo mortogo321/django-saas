@@ -4,6 +4,8 @@ import { email, minLength, required } from '@vuelidate/validators';
 import { computed, onMounted, onUnmounted, reactive } from 'vue';
 
 import logo from '@/assets/logo.svg';
+import { toast } from '@/plugins/sweetalert2';
+import { signIn } from '@/services/auth';
 import { singleView } from '@/utils';
 
 onMounted(() => singleView());
@@ -37,7 +39,14 @@ async function onSubmit() {
         return
     }
 
-    console.log(form.email)
+    const { data } = await signIn(form);
+
+    if (!data.success) {
+        toast.fire({
+            icon: 'error',
+            title: data.message,
+        });
+    }
 }
 </script>
 

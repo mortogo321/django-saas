@@ -4,12 +4,14 @@ import { email, minLength, required, sameAs } from '@vuelidate/validators';
 import { computed, onMounted, onUnmounted, reactive } from 'vue';
 
 import logo from '@/assets/logo.svg';
+import { signUp } from '@/services/auth';
 import { singleView } from '@/utils';
 
 onMounted(() => singleView());
 onUnmounted(() => singleView(true));
 
 const form = reactive({
+    username: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -37,8 +39,9 @@ async function onSubmit() {
     if (!isValid) {
         return
     }
-    // If the form is valid, perform some action with the form data
-    alert('Form submitted successfully')
+
+    const { data } = await signUp(form);
+    console.log({ data });
 }
 </script>
 
