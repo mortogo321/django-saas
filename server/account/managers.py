@@ -7,7 +7,8 @@ class UserManager(BaseUserManager):
         if not email:
             raise ValueError(_("Email address is required."))
 
-        email = self.normalize_email(email.lower())
+        email = self.normalize_email(email)
+        email = email.lower()
         user = self.model(
             email=email,
             **kwargs,

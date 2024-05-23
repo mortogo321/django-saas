@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     "account",
     # "order",
     # "payment",
-    # "user",
 ]
 
 MIDDLEWARE = [
@@ -180,23 +179,18 @@ REST_FRAMEWORK = {
 }
 
 DJOSER = {
-    "PASSWORD_RESET_CONFIRM_URL": "auth/password/reset/confirm/{uid}/{token}",
+    "LOGIN_FIELD": "email",
     "SEND_ACTIVATION_EMAIL": True,
-    "ACTIVATION_URL": "auth/activate/{uid}/{token}",
     "USER_CREATE_PASSWORD_RETYPE": True,
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
+    "ACTIVATION_URL": "auth/activate/{uid}/{token}",
+    "PASSWORD_RESET_CONFIRM_URL": "auth/password/reset/confirm/{uid}/{token}",
     "TOKEN_MODEL": None,
     "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": config(
         "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS",
         default="http://localhost/auth/google,http://localhost/auth/facebook",
         cast=Csv(),
     ),
-    "SERIALIZERS": {
-        "current_user": "account.serializers.AccountSerializer",
-        "user": "account.serializers.AccountSerializer",
-        "user_create": "account.serializers.AccountSerializer",
-        "user_create_password_retype": "account.serializers.AccountSerializer",
-    },
 }
 
 # Default primary key field type
@@ -242,9 +236,9 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=False, cast=bool)
 EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=False, cast=bool)
 
 DOMAIN = config("DOMAIN")
-SITE_NAME = config("SITE_NAME")
+SITE_NAME = config("APP_NAME")
 DEFAULT_FROM_EMAIL = config("EMAIL_FROM")
-EMAIL_SUBJECT_PREFIX = config("EMAIL_SUBJECT_PREFIX")
+EMAIL_SUBJECT_PREFIX = config("APP_NAME")
 
 STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY")
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
