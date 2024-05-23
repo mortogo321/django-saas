@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
 import { email, minLength, required } from '@vuelidate/validators';
-import { computed, onMounted, reactive } from 'vue';
+import { computed, nextTick, onMounted, reactive, ref } from 'vue';
 
 import logo from '@/assets/logo.svg';
 import { toast } from '@/plugins/sweetalert2';
@@ -11,20 +11,12 @@ import { useRouter } from 'vue-router';
 
 const auth = useAuthStore();
 const router = useRouter();
-
-onMounted(() => {
-    if (auth.isAuthenticated) {
-        router.push('/dashboard');
-    }
-
-});
-
+const autoFocus = ref();
 const form = reactive({
     email: '',
     password: '',
     rememberMe: false,
 });
-
 const rules = computed(() => {
     return {
         email: {
@@ -37,7 +29,6 @@ const rules = computed(() => {
         },
     }
 })
-
 const v$ = useVuelidate(rules, form)
 
 async function onSubmit() {
@@ -60,6 +51,16 @@ async function onSubmit() {
 
     console.log(data);
 }
+
+onMounted(() => {
+    if (auth.isAuthenticated) {
+        router.push('/dashboard');
+    }
+
+    nextTick(() => {
+        autoFocus.value.focus();
+    });
+});
 </script>
 
 <template>
@@ -74,7 +75,8 @@ async function onSubmit() {
                     class="form-control"
                     :class="{ 'is-invalid': v$.email.$error }"
                     placeholder="name@example.com"
-                    v-model="form.email">
+                    v-model="form.email"
+                    ref="autoFocus">
                 <label>Email address</label>
             </div>
             <div class="form-floating mb-3">
