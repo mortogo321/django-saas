@@ -2,6 +2,7 @@ from django.urls import path, re_path
 
 from .views import (
     LogoutView,
+    SendMail,
     UserProviderAuthView,
     UserTokenObtainPairView,
     UserTokenRefreshView,
@@ -16,4 +17,5 @@ urlpatterns = [
     path("jwt/refresh/", UserTokenRefreshView.as_view()),
     path("jwt/verify/", UserTokenVerifyView.as_view()),
     path("logout/", LogoutView.as_view()),
+    path("sendMail/", SendMail.as_view()),
 ]

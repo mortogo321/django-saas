@@ -45,11 +45,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "corsheaders",
     "djoser",
-    # "order",
-    # "payment",
     "rest_framework",
     "social_django",
-    "users",
+    "account",
+    # "order",
+    # "payment",
+    # "user",
 ]
 
 MIDDLEWARE = [
@@ -167,12 +168,11 @@ AUTHENTICATION_BACKENDS = [
     "social_core.backends.google.GoogleOAuth2",
     "social_core.backends.facebook.FacebookOAuth2",
     "django.contrib.auth.backends.ModelBackend",
-    # "users.authenticate.ModelBackend",
 ]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "users.authentication.UserJWTAuthentication",
+        "account.authentication.UserAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
@@ -192,10 +192,10 @@ DJOSER = {
         cast=Csv(),
     ),
     "SERIALIZERS": {
-        "user_create": "users.serializers.JWTUserSerializer",
-        "user_create_password_retype": "users.serializers.JWTUserSerializer",
-        "user": "users.serializers.JWTUserSerializer",
-        "current_user": "users.serializers.JWTUserSerializer",
+        "current_user": "account.serializers.AccountSerializer",
+        "user": "account.serializers.AccountSerializer",
+        "user_create": "account.serializers.AccountSerializer",
+        "user_create_password_retype": "account.serializers.AccountSerializer",
     },
 }
 
@@ -204,7 +204,7 @@ DJOSER = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "users.User"
+AUTH_USER_MODEL = "account.User"
 
 AUTH_COOKIE = "access"
 AUTH_COOKIE_ACCESS_MAX_AGE = 60 * 5
