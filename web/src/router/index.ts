@@ -18,20 +18,32 @@ const router = createRouter({
       component: () => import("@/views/AboutView.vue"),
     },
     {
-      path: "/sign-in",
-      name: "sign-in",
-      component: () => import("@/views/auth/SignInView.vue"),
+      path: "/auth",
       meta: {
         layout: "SingleLayout",
       },
-    },
-    {
-      path: "/sign-up",
-      name: "sign-up",
-      component: () => import("@/views/auth/SignUpView.vue"),
-      meta: {
-        layout: "SingleLayout",
-      },
+      children: [
+        {
+          path: "sign-in",
+          name: "sign-in",
+          component: () => import("@/views/auth/SignInView.vue"),
+        },
+        {
+          path: "sign-up",
+          name: "sign-up",
+          component: () => import("@/views/auth/SignUpView.vue"),
+        },
+        {
+          path: "sign-up/success",
+          name: "sign-up-success",
+          component: () => import("@/views/auth/SignUpSuccessView.vue"),
+        },
+        {
+          path: "activate/:uid/:token",
+          name: "auth-activate",
+          component: () => import("@/views/auth/ActivateView.vue"),
+        },
+      ],
     },
     {
       path: "/account",

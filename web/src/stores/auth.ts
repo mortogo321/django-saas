@@ -1,9 +1,5 @@
+import type { AuthenticationToken } from "@/types/auth";
 import { defineStore } from "pinia";
-
-export interface AuthenticationToken {
-  access: string;
-  refresh: string;
-}
 
 export const useAuthStore = defineStore({
   id: "auth",

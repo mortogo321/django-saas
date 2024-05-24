@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/auth';
+
+const auth = useAuthStore();
 </script>
 
 <template>
@@ -6,7 +9,7 @@
     <h1>Welcome to KaliDocs</h1>
     <p class="lead">...</p>
     <p class="lead">
-      <RouterLink to="/sign-in" class="btn btn-lg btn-light">Get started</RouterLink>
+      <RouterLink :to="auth.isAuthenticated ? '/account' : '/auth/sign-in'" class="btn btn-lg btn-light">Get started</RouterLink>
     </p>
   </div>
 </template>

@@ -40,21 +40,26 @@ async function onSubmit() {
 
     const { data } = await signIn(form);
 
-    if (!data.success) {
+    if (!data?.success) {
         toast.fire({
             icon: 'error',
             title: data.message,
         });
 
         form.password = '';
+        return;
     }
 
-    console.log(data);
+    auth.setAuthentication({
+        access: data.access,
+        refresh: data.refresh,
+    });
+    router.push({ name: 'account' });
 }
 
 onMounted(() => {
     if (auth.isAuthenticated) {
-        router.push('/dashboard');
+        router.push('/account');
     }
 
     nextTick(() => {
@@ -96,11 +101,11 @@ onMounted(() => {
                     Remember me
                 </label>
             </div>
-            <button class="btn btn-primary w-full py-2" type="submit">Sign in</button>
+            <button class="btn btn-primary w-full py-2" type="submit">Sign In</button>
         </form>
 
         <div class="py-3 text-center">
-            Don't have an account? <RouterLink to="/sign-up">Sign Up</RouterLink>
+            Don't have an account? <RouterLink to="/auth/sign-up">Sign Up</RouterLink>
         </div>
     </div>
 </template>

@@ -12,10 +12,9 @@ const auth = useAuthStore();
 const router = useRouter();
 const autoFocus = ref();
 const form = reactive({
-    username: '',
     email: '',
     password: '',
-    confirmPassword: '',
+    re_password: '',
 });
 const rules = computed(() => {
     return {
@@ -27,7 +26,10 @@ const rules = computed(() => {
             required,
             minLength: minLength(4)
         },
-        confirmPassword: sameAs(form.password),
+        re_password: {
+            required,
+            sameAs: sameAs(form.password),
+        },
     }
 })
 const v$ = useVuelidate(rules, form)
@@ -40,12 +42,15 @@ async function onSubmit() {
     }
 
     const { data } = await signUp(form);
-    console.log({ data });
+
+    if (data?.success) {
+        router.push('/auth/sign-up/success');
+    }
 }
 
 onMounted(() => {
     if (auth.isAuthenticated) {
-        router.push('/dashboard');
+        router.push('/account');
     }
 
     nextTick(() => {
@@ -78,23 +83,25 @@ onMounted(() => {
                     placeholder="Password"
                     v-model="form.password">
                 <label>Password</label>
+                <div v-if="v$.password.$error" class="invalid-feedback">{{ v$.password.$errors[0].$message }}</div>
             </div>
 
             <div class="form-floating mb-3">
                 <input
                     type="password"
                     class="form-control"
-                    :class="{ 'is-invalid': v$.confirmPassword.$error }"
+                    :class="{ 'is-invalid': v$.re_password.$error }"
                     placeholder="Confirm Password"
-                    v-model="form.confirmPassword">
-                <label>Password</label>
+                    v-model="form.re_password">
+                <label>Confirm Password</label>
+                <div v-if="v$.re_password.$error" class="invalid-feedback">{{ v$.re_password.$errors[0].$message }}</div>
             </div>
 
-            <button class="btn btn-primary w-full py-2" type="submit">Sign up</button>
+            <button class="btn btn-primary w-full py-2" type="submit">Sign Up</button>
         </form>
 
         <div class="py-3 d-flex flex-wrap justify-content-center align-items-center gap-1">
-            Already have an account? <RouterLink to="/sign-in">Sign In</RouterLink>
+            Already have an account? <RouterLink to="/auth/sign-in">Sign In</RouterLink>
             <span class="divider"></span>
             Forget your password? <RouterLink to="/">Reset Password</RouterLink>
         </div>
