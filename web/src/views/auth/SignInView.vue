@@ -4,6 +4,7 @@ import { email, minLength, required } from '@vuelidate/validators';
 import { computed, nextTick, onMounted, reactive, ref } from 'vue';
 
 import logo from '@/assets/logo.svg';
+import ButtonLoading from '@/components/ButtonLoading.vue';
 import { toast } from '@/plugins/sweetalert2';
 import { signIn } from '@/services/auth';
 import { useAuthStore } from '@/stores/auth';
@@ -25,11 +26,12 @@ const rules = computed(() => {
         },
         password: {
             required,
-            minLength: minLength(4)
+            minLength: minLength(8)
         },
     }
 })
 const v$ = useVuelidate(rules, form)
+const loading = ref(false);
 
 async function onSubmit() {
     const isValid = await v$.value.$validate()
@@ -38,7 +40,11 @@ async function onSubmit() {
         return
     }
 
+    loading.value = true;
+
     const { data } = await signIn(form);
+
+    loading.value = false;
 
     if (!data?.success) {
         toast.fire({
@@ -101,7 +107,12 @@ onMounted(() => {
                     Remember me
                 </label>
             </div>
-            <button class="btn btn-primary w-full py-2" type="submit">Sign In</button>
+
+            <ButtonLoading
+                type="submit"
+                title="Sign In"
+                classes="w-full"
+                :loading="loading" />
         </form>
 
         <div class="py-3 text-center">
