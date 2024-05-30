@@ -1,17 +1,16 @@
 <script setup lang="ts">
+import { confirm } from '@/plugins/sweetalert2';
 import { useAuthStore } from '@/stores/auth';
-import Swal from 'sweetalert2';
 import { useRouter } from 'vue-router';
 
 const auth = useAuthStore();
 const router = useRouter();
 
 async function onLogout() {
-    const result = await Swal.fire({
+    const result = await confirm.fire({
         title: "Are you leaving?",
-        text: "Sing out!",
         icon: "warning",
-        showCancelButton: true,
+        confirmButtonText: 'Yes',
     });
 
     if (result.isConfirmed) {

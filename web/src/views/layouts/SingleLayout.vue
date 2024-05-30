@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import FooterMain from '@/components/FooterMain.vue';
 import HeaderMain from '@/components/HeaderMain.vue';
-
 </script>
 
 <template>

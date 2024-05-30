@@ -11,3 +11,21 @@ export const toast = Swal.mixin({
     toast.onmouseleave = Swal.resumeTimer;
   },
 });
+
+export const confirm = Swal.mixin({
+  showCancelButton: true,
+  buttonsStyling: false,
+  customClass: {
+    confirmButton: `btn btn-sm btn-primary px-2 me-1`,
+    cancelButton: `btn btn-sm btn-light px-2`,
+  },
+});
+
+export const confirmDelete = Swal.mixin({
+  showCancelButton: true,
+  buttonsStyling: false,
+  customClass: {
+    confirmButton: `btn btn-sm btn-danger px-2 me-1`,
+    cancelButton: `btn btn-sm btn-light px-2`,
+  },
+});

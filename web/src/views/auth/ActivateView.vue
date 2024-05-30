@@ -8,6 +8,7 @@ import type { ActivateForm } from '@/types/auth';
 
 const route = useRoute();
 const router = useRouter();
+
 async function onActivate() {
     const form: ActivateForm = {
         uid: route.params.uid as string,

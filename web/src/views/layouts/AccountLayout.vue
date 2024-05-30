@@ -2,7 +2,6 @@
 import FooterMain from '@/components/FooterMain.vue';
 import HeaderMain from '@/components/HeaderMain.vue';
 import SidebarMain from '@/components/SidebarMain.vue';
-
 </script>
 
 <template>
