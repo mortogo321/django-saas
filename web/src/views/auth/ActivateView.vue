@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
 import { toast } from '@/plugins/sweetalert2';
 import { activate } from '@/services/auth';
 import type { ActivateForm } from '@/types/auth';
-import { onMounted } from 'vue';
-
-import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
@@ -16,8 +16,8 @@ async function onActivate() {
     const { data } = await activate(form);
 
     toast.fire({
-        icon: (data?.success ? 'success' : 'error'),
-        title: (data?.success ? 'Account activated' : data?.message),
+        icon: (typeof data === 'string' ? 'success' : 'error'),
+        title: (data?.message || 'Account activated'),
         willClose: () => router.push('/auth/sign-in')
     });
 }

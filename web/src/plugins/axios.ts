@@ -11,7 +11,9 @@ axios.interceptors.request.use((config) => {
 
 axios.interceptors.response.use(
   (response) => {
-    response.data.success = Object.keys(response.data).length !== 0;
+    if (typeof response.data === "object") {
+      response.data.success = Object.keys(response.data).length !== 0;
+    }
 
     return response;
   },
