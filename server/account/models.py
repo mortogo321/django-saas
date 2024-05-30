@@ -10,17 +10,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=255,
         unique=True,
     )
-    first_name = models.CharField(
-        max_length=255,
-        blank=True,
-        null=True,
-    )
-    last_name = models.CharField(
-        max_length=255,
-        blank=True,
-        null=True,
-    )
-
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -35,3 +24,57 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    updated_at = models.DateTimeField(
+        User,
+        auto_now=True,
+    )
+
+    first_name = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+    last_name = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+
+    phone = models.CharField(
+        max_length=255,
+        blank=True,
+    )
+    address1 = models.CharField(
+        max_length=255,
+        blank=True,
+    )
+    address2 = models.CharField(
+        max_length=255,
+        blank=True,
+    )
+    city = models.CharField(
+        max_length=255,
+        blank=True,
+    )
+    state = models.CharField(
+        max_length=255,
+        blank=True,
+    )
+    zipcode = models.CharField(
+        max_length=255,
+        blank=True,
+    )
+    country = models.CharField(
+        max_length=255,
+        blank=True,
+    )
+
+    def name(self):
+        return f"{self.first_name} {self.last_name}"
+
+    def __str__(self):
+        return self.name

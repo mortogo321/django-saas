@@ -2,15 +2,17 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 
-from .models import User
+from .models import Profile, User
+
+
+class UserProfile(admin.StackedInline):
+    model = Profile
 
 
 class UserAdminConfig(UserAdmin):
     model = User
     list_display = [
         "email",
-        "first_name",
-        "last_name",
         "is_staff",
         "is_superuser",
         "is_active",
@@ -22,8 +24,6 @@ class UserAdminConfig(UserAdmin):
     ]
     search_fields = [
         "email",
-        "first_name",
-        "last_name",
     ]
     ordering = ["-created_at"]
     fieldsets = [
@@ -32,25 +32,17 @@ class UserAdminConfig(UserAdmin):
             {"fields": ["email"]},
         ),
         (
-            "Personal",
-            {
-                "fields": [
-                    "first_name",
-                    "last_name",
-                ]
-            },
-        ),
-        (
             "Permissions",
             {
                 "fields": [
                     "is_staff",
-                    "is_supervisor",
+                    "is_superuser",
                     "is_active",
                 ]
             },
         ),
     ]
+    inlines = [UserProfile]
     add_fieldsets = [
         (
             None,
@@ -58,11 +50,10 @@ class UserAdminConfig(UserAdmin):
                 "classes": ["wide"],
                 "fields": [
                     "email",
-                    "first_name",
-                    "last_name",
                     "password1",
                     "password2",
                     "is_staff",
+                    "is_superuser",
                     "is_active",
                 ],
             },
