@@ -4,6 +4,6 @@ const year = new Date().getFullYear();
 
 <template>
     <footer class="w-full mt-auto text-center text-muted">
-        <p>&copy;KaliDocs {{ year }}.</p>
+        <p>&copy;Demo SAAS {{ year }}.</p>
     </footer>
 </template>

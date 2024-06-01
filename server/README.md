@@ -1,4 +1,4 @@
-# KaliDocs - Server
+# Django - Server
 Django + PostgreSQL
 
 ## Installation

@@ -6,7 +6,7 @@ const auth = useAuthStore();
 
 <template>
   <div class="px-3 text-center">
-    <h1>Welcome to KaliDocs</h1>
+    <h1>Welcome to Demo SAAS</h1>
     <p class="lead">...</p>
     <p class="lead">
       <RouterLink :to="auth.isAuthenticated ? '/account' : '/auth/sign-in'" class="btn btn-lg btn-light">Get started</RouterLink>
